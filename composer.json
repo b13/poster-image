@@ -1,0 +1,22 @@
+{
+    "name": "b13/poster-image",
+    "description": "Sometimes you just need a poster image (for videos) ... in TYPO3",
+    "type": "typo3-cms-extension",
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "require": {
+		"php": "^7.4 || ^8.0",
+        "typo3/cms-core": "^10.4 || ^11.5 || ^12.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "B13\\PosterImage\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "poster_image"
+        }
+    }
+}
