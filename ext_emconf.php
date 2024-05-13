@@ -4,7 +4,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Poster Image',
     'description' => 'Sometimes you just need a poster image (for videos) ... in TYPO3',
     'category' => 'fe',
-    'version' => '1.0.0',
+    'version' => '1.1.0',
     'state' => 'stable',
     'clearcacheonload' => true,
     'author' => 'Benni Mack',
@@ -12,7 +12,8 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'b13 GmbH',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-12.99.99',
+            'typo3' => '10.4.0-13.99.99',
+            'filemetadata' => '10.4.0-13.99.99',
         ],
     ],
 ];
