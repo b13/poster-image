@@ -44,16 +44,22 @@ class VideoTagWithPosterRenderer extends VideoTagRenderer
     public function render(FileInterface $file, $width, $height, array $options = [])
     {
         $posterReference = $file->getProperty('poster');
+
         if ($posterReference) {
             if ($posterReference instanceof FileInterface) {
                 $posterTarget = $posterReference->getPublicUrl();
             } else {
-                $posterTarget = $this->linkService->resolve($posterReference)['url'] ?? null;
+                $posterFile = $this->linkService->resolve($posterReference)['file'] ?? null;
+
+                if($posterFile instanceof FileInterface){
+                    $posterTarget = $posterFile->getPublicUrl();
+                }
             }
             if (!empty($posterTarget)) {
                 $options['additionalAttributes']['poster'] = $posterTarget;
             }
         }
+
         return parent::render($file, $width, $height, $options);
     }
 }
