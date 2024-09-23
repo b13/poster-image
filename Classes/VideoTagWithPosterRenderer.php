@@ -16,50 +16,94 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\Rendering\VideoTagRenderer;
 
-/**
- * VideoTagRenderer that adds a poster image to the video tag
- */
-class VideoTagWithPosterRenderer extends VideoTagRenderer
-{
-    protected LinkService $linkService;
-
-    public function __construct(LinkService $linkService)
+if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() > 11) {
+    /**
+     * VideoTagRenderer that adds a poster image to the video tag
+     */
+    class VideoTagWithPosterRenderer extends VideoTagRenderer
     {
-        $this->linkService = $linkService;
-    }
+        protected LinkService $linkService;
 
-    public function getPriority()
-    {
-        return 10;
-    }
-
-    public function canRender(FileInterface $file)
-    {
-        if (!parent::canRender($file)) {
-            return false;
+        public function __construct(LinkService $linkService)
+        {
+            $this->linkService = $linkService;
         }
-        return (bool)$file->getProperty('poster');
-    }
 
-    public function render(FileInterface $file, $width, $height, array $options = [])
-    {
-        $posterReference = $file->getProperty('poster');
+        public function getPriority()
+        {
+            return 10;
+        }
 
-        if ($posterReference) {
-            if ($posterReference instanceof FileInterface) {
-                $posterTarget = $posterReference->getPublicUrl();
-            } else {
-                $posterFile = $this->linkService->resolve($posterReference)['file'] ?? null;
+        public function canRender(FileInterface $file)
+        {
+            if (!parent::canRender($file)) {
+                return false;
+            }
+            return (bool)$file->getProperty('poster');
+        }
 
-                if($posterFile instanceof FileInterface){
-                    $posterTarget = $posterFile->getPublicUrl();
+        public function render(FileInterface $file, $width, $height, array $options = [])
+        {
+            $posterReference = $file->getProperty('poster');
+
+            if ($posterReference) {
+                if ($posterReference instanceof FileInterface) {
+                    $posterTarget = $posterReference->getPublicUrl();
+                } else {
+                    $posterFile = $this->linkService->resolve($posterReference)['file'] ?? null;
+
+                    if ($posterFile instanceof FileInterface) {
+                        $posterTarget = $posterFile->getPublicUrl();
+                    }
+                }
+                if (!empty($posterTarget)) {
+                    $options['additionalAttributes']['poster'] = $posterTarget;
                 }
             }
-            if (!empty($posterTarget)) {
-                $options['additionalAttributes']['poster'] = $posterTarget;
-            }
+
+            return parent::render($file, $width, $height, $options);
+        }
+    }
+} else {
+    /**
+     * VideoTagRenderer that adds a poster image to the video tag
+     */
+    class VideoTagWithPosterRendererV11 extends VideoTagRenderer
+    {
+        protected LinkService $linkService;
+
+        public function __construct(LinkService $linkService)
+        {
+            $this->linkService = $linkService;
         }
 
-        return parent::render($file, $width, $height, $options);
+        public function getPriority()
+        {
+            return 10;
+        }
+
+        public function canRender(FileInterface $file)
+        {
+            if (!parent::canRender($file)) {
+                return false;
+            }
+            return (bool)$file->getProperty('poster');
+        }
+
+        public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
+        {
+            $posterReference = $file->getProperty('poster');
+            if ($posterReference) {
+                if ($posterReference instanceof FileInterface) {
+                    $posterTarget = $posterReference->getPublicUrl();
+                } else {
+                    $posterTarget = $this->linkService->resolve($posterReference)['url'] ?? null;
+                }
+                if (!empty($posterTarget)) {
+                    $options['additionalAttributes']['poster'] = $posterTarget;
+                }
+            }
+            return parent::render($file, $width, $height, $options);
+        }
     }
 }
