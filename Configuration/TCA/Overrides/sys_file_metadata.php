@@ -50,6 +50,6 @@ if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() > 11) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'sys_file_metadata',
     'poster',
-    TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO,
+    TYPO3\CMS\Core\Resource\FileType::VIDEO->value,
     'after:caption'
 );

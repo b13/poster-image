@@ -1,14 +1,14 @@
 {
     "name": "b13/poster-image",
-    "description": "Sometimes you just need a poster image (for videos) ... in TYPO3",
+    "description": "Poster Image - Sometimes you just need a poster image (for videos) ... in TYPO3",
     "type": "typo3-cms-extension",
     "license": [
         "GPL-2.0-or-later"
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "typo3/cms-core": "^10.4 || ^11.5 || ^12.4 || ^13.0",
-        "typo3/cms-filemetadata": "^10.4 || ^11.5 || ^12.4 || ^13.0"
+        "php": "^8.2",
+        "typo3/cms-core": "^13.0 || ^14.0",
+        "typo3/cms-filemetadata": "^13.0 || ^14.0"
     },
     "autoload": {
         "psr-4": {
@@ -17,7 +17,11 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "poster_image"
+            "extension-key": "poster_image",
+            "version": "2.0.0",
+            "Package": {
+                "providesPackages": {}
+            }
         }
     }
 }
